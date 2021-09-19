@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+html, body {
+    height: 100%;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.footer {
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.navBarTop {
+    height: 4.5rem;
+    background-color: #00121e;
+}
+
+.buttonSave {
+    width: 125px;
+}
+
+.titleLink {
+    text-decoration: none;
+}
