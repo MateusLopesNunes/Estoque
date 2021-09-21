@@ -15,10 +15,7 @@ const Search = () => {
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value} = ev.target;
         setValues({...values, [name]: value});
-
-        axios.get(`${BASE_URL}/v2/api/product/${values.name}`).then(response => {
-            
-        });
+        console.log(values);
     }
 
     return (
