@@ -11,7 +11,6 @@ const Product = () => {
             <NavBar />
             <div className="container">
                 <Title />
-                <Search />
                 <DataTable />
                 <ButtonAdd />
             </div>
