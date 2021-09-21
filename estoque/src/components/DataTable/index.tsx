@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ModalDelete from "../ModalDelete";
 import ModalUpdate from "../ModalUpdate";
 import { BASE_URL } from "../../util/requests";
-import { ProductPage } from "../../types/Product";
+import {  ProductPage } from "../../types/Product";
+import Product from "../../page/Product";
 
 const DataTable = () => {
 
@@ -19,7 +21,12 @@ const DataTable = () => {
         axios.get(`${BASE_URL}/v2/api/product?page=0&size=20`).then(response => {
             setPage(response.data);
         })
-    }, [])
+    }, [page.content]);
+
+    const deleteProduct = (id: number | undefined) => {
+        axios.delete(`${BASE_URL}/v2/api/product/${id}`);
+
+    }
 
     return (
         <table className="table table-striped mt-2">
@@ -44,7 +51,7 @@ const DataTable = () => {
                         <td>
                             <div className="d-grid gap-2 d-md-block">
                                 <ModalUpdate />
-                                <ModalDelete />
+                                <button className="btn btn-danger" onClick={() => deleteProduct(item.id)}>Delete</button>
                             </div>
                         </td>
                     </tr>

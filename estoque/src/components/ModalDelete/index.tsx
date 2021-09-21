@@ -1,4 +1,11 @@
-const ModalDelete = () => {
+import { Product } from "../../types/Product";
+
+type Props = {
+    product: Product;
+    productChange: Function;
+}
+
+const ModalDelete = ({product, productChange}: Props) => {
     return (
         <>
             <button type="button" className="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -13,7 +20,7 @@ const ModalDelete = () => {
                         </div>
                         <div className="modal-footer w-100">
                             <button type="button" className="btn btn-secondary w-25" data-bs-dismiss="modal">No</button>
-                            <button type="button" className="btn btn-primary w-25">Yes</button>
+                            <button type="button" className="btn btn-primary w-25" aria-label="Close" onClick={() => productChange(product.id)}>Yes</button>
                         </div>
                     </div>
                 </div>
