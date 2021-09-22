@@ -17,7 +17,7 @@ const Search = ({ productChange }: Props) => {
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value} = ev.target;
         setValues({...values, [name]: value});
-        productChange(values.name)
+        productChange(values.name);
     }
 
     return (

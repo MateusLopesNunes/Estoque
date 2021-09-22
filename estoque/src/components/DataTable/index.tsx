@@ -6,8 +6,6 @@ import { BASE_URL } from "../../util/requests";
 import { ProductPage } from "../../types/Product";
 import Search from "../Search";
 
-type Id = number | undefined;
-
 const DataTable = () => {
 
 
@@ -41,7 +39,7 @@ const DataTable = () => {
 
     return (
         <>
-            <Search productChange={nameTop}/>
+            <Search productChange={changeName}/>
             <table className="table table-striped mt-2">
                 <thead>
                     <tr>

@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
+import productIcon from "../../assets/icons/product.jpeg";
 
 const NavBar = () => {
     return (
         <nav className="navbar navbar-light  navBarTop">
             <div className="container">
                 <Link to="/" className="titleLink">
-                    <span className="navbar-brand mb-0 h1 fs-3 text-white">Cradfor</span>
+                <Link to="/">
+                        <img src={productIcon} alt="Gerênciador de estoque" width="50" height="50"/>
+                    </Link>
                 </Link>
             </div>
         </nav>
