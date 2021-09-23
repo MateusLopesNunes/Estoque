@@ -17,11 +17,15 @@ const Search = ({ productChange }: Props) => {
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value} = ev.target;
         setValues({...values, [name]: value});
+    }
+
+    const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => { //envio padrão do formulario
+        ev.preventDefault(); //evita o funcionamento padrão do formulario(antigo)
         productChange(values.name);
     }
 
     return (
-        <form className="row mt-3">
+        <form className="row mt-4" onSubmit={onSubmit}>
             <div className="col-4">
                 <label htmlFor="inputName fs-3">Name</label>
                 <input type="text" name="name" className="form-control" id="inputName" onChange={(ev) => onChange(ev)}/>

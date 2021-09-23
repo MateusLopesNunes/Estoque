@@ -24,7 +24,7 @@ const FormProduct = () => {
         ev.preventDefault(); //evita o funcionamento padrão do formulario(antigo)
 
         axios.post(`${BASE_URL}/v2/api/product`, values).then(response => { 
-            history.push('/'); //faz o redirecionamento
+            history.push('/Product'); //faz o redirecionamento
         });
     }
 

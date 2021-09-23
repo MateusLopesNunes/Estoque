@@ -1,17 +1,14 @@
-import ButtonAdd from "../../components/ButtonAdd";
 import DataTable from "../../components/DataTable";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/NavBar";
-import Title from "../../components/Title";
 
 const Product = () => {
     return (
         <>
             <NavBar />
             <div className="container">
-                <Title />
+                <h1 className="title mt-4">Inventory management</h1>
                 <DataTable />
-                <ButtonAdd />
             </div>
             <Footer/>
         </>

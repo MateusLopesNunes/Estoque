@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ButtonAdd from "../../components/ButtonAdd";
 import ModalDelete from "../ModalDelete";
 import ModalUpdate from "../ModalUpdate";
 import { BASE_URL } from "../../util/requests";
 import { ProductPage } from "../../types/Product";
 import Search from "../Search";
+import Pagiation from "../Pagination";
 
 const DataTable = () => {
 
+    const [activePage, setActivePage] = useState(0);
 
     const [page, setPage] = useState<ProductPage>({
         first: true,
@@ -18,28 +21,32 @@ const DataTable = () => {
     });
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/v2/api/product?page=0&size=20`).then(response => {
+        axios.get(`${BASE_URL}/v2/api/product?page=${activePage}&size=7`).then(response => {
             setPage(response.data);
         })
-    }, [page.content])
+    }, [activePage, page.content])
 
-    const changeId = (id: number) => {
+    const changePagination = (index: number) => {
+        setActivePage(index);
+    }
+
+    const changeDelete = (id: number) => {
         axios.delete(`${BASE_URL}/v2/api/product/${id}`)
     }
 
-    const changeName = (name: string) => {
+    const changeSearch = (name: string) => {
+        console.log(`Name: ${name}`);
         axios.get(`${BASE_URL}/v2/api/product/${name}`).then(response => {
             setPage(response.data);
         });
     }
 
-    const nameTop = (name: string) => {
-        console.log(`Name: ${name}`);
-    }
-
     return (
         <>
-            <Search productChange={changeName}/>
+            <div className="mx-3">
+                <Search productChange={changeSearch} />
+                <ButtonAdd />
+            </div>
             <table className="table table-striped mt-2">
                 <thead>
                     <tr>
@@ -62,13 +69,14 @@ const DataTable = () => {
                             <td>
                                 <div className="d-grid gap-2 d-md-block">
                                     <ModalUpdate />
-                                    <ModalDelete product={item} productChange={changeId} />
+                                    <ModalDelete product={item} productChange={changeDelete} />
                                 </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <Pagiation page={page} paginationChange={changePagination} />
         </>
     );
 }
