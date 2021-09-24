@@ -53,7 +53,7 @@ const FormProduct = () => {
                 </div>
             </div>
             <div className="mt-4">
-                <button type="submit" className="btn btn-primary buttonSave">Save</button>
+                <button type="submit" className="btn btn-primary buttonSave">Update</button>
             </div>
         </form>
     );

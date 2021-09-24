@@ -43,7 +43,7 @@ const DataTable = () => {
 
     return (
         <>
-            <div className="mx-3">
+            <div>
                 <Search productChange={changeSearch} />
                 <ButtonAdd />
             </div>
@@ -68,7 +68,7 @@ const DataTable = () => {
                             <td>{item.barCode}</td>
                             <td>
                                 <div className="d-grid gap-2 d-md-block">
-                                    <ModalUpdate />
+                                    <ModalUpdate product={item}/>
                                     <ModalDelete product={item} productChange={changeDelete} />
                                 </div>
                             </td>
