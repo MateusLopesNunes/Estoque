@@ -6,7 +6,7 @@ type Props = {
     productChange: Function;
 }
 
-const ModalDelete = ({ product, productChange }: Props) => {
+const ButtonDelete = ({ product, productChange }: Props) => {
 
     return (
         <>
@@ -18,4 +18,4 @@ const ModalDelete = ({ product, productChange }: Props) => {
     );
 }
 
-export default ModalDelete;
+export default ButtonDelete;

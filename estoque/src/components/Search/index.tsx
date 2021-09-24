@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useParams } from "react-router";
 import { Product } from "../../types/Product";
 
-type Props = {
-    productChange: Function;
-}
+/*type ParamTypes = {
+    id: string;
+}*/
 
-const Search = ({ productChange }: Props) => {
+const Search = () => {
+
+    //const {id} = useParams<ParamTypes>();
 
     const [values, setValues] = useState<Product>({
         name: '',
@@ -19,13 +22,12 @@ const Search = ({ productChange }: Props) => {
         setValues({...values, [name]: value});
     }
 
-    const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => { //envio padrão do formulario
+    /*const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => { //envio padrão do formulario
         ev.preventDefault(); //evita o funcionamento padrão do formulario(antigo)
-        productChange(values.name);
-    }
+    }*/
 
     return (
-        <form className="row mt-4" onSubmit={onSubmit}>
+        <form className="row mt-4" >
             <div className="col-4">
                 <label htmlFor="inputName fs-3">Name</label>
                 <input type="text" name="name" className="form-control" id="inputName" onChange={(ev) => onChange(ev)}/>

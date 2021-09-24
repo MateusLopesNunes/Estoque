@@ -6,7 +6,7 @@ type Props = {
     product: Product;
 }
 
-const ModalUpdate = ({product}: Props) => {
+const ButtonUpdate = ({product}: Props) => {
     return (
         <>
             <Link to={{pathname: `/Update/${product.id}`}}>
@@ -19,4 +19,4 @@ const ModalUpdate = ({product}: Props) => {
     );
 }
 
-export default ModalUpdate;
+export default ButtonUpdate;

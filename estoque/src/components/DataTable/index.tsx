@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonAdd from "../../components/ButtonAdd";
-import ModalDelete from "../ModalDelete";
-import ModalUpdate from "../ModalUpdate";
+import ModalDelete from "../ButtonDelete";
+import ModalUpdate from "../ButtonUpdate";
 import { BASE_URL } from "../../util/requests";
 import { ProductPage } from "../../types/Product";
 import Search from "../Search";
 import Pagiation from "../Pagination";
+import ButtonUpdate from "../ButtonUpdate";
+import ButtonDelete from "../ButtonDelete";
 
 const DataTable = () => {
 
@@ -24,7 +26,7 @@ const DataTable = () => {
         axios.get(`${BASE_URL}/v2/api/product?page=${activePage}&size=7`).then(response => {
             setPage(response.data);
         })
-    }, [activePage, page.content])
+    }, [activePage, page.content]);
 
     const changePagination = (index: number) => {
         setActivePage(index);
@@ -34,19 +36,8 @@ const DataTable = () => {
         axios.delete(`${BASE_URL}/v2/api/product/${id}`)
     }
 
-    const changeSearch = (name: string) => {
-        console.log(`Name: ${name}`);
-        axios.get(`${BASE_URL}/v2/api/product/${name}`).then(response => {
-            setPage(response.data);
-        });
-    }
-
     return (
         <>
-            <div>
-                <Search productChange={changeSearch} />
-                <ButtonAdd />
-            </div>
             <table className="table table-striped mt-2">
                 <thead>
                     <tr>
@@ -68,8 +59,8 @@ const DataTable = () => {
                             <td>{item.barCode}</td>
                             <td>
                                 <div className="d-grid gap-2 d-md-block">
-                                    <ModalUpdate product={item}/>
-                                    <ModalDelete product={item} productChange={changeDelete} />
+                                    <ButtonUpdate product={item}/>
+                                    <ButtonDelete product={item} productChange={changeDelete} />
                                 </div>
                             </td>
                         </tr>
