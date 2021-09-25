@@ -6,7 +6,12 @@ import { Product } from "../../types/Product";
     id: string;
 }*/
 
-const Search = () => {
+type Props = {
+    value: string,
+    onChange: Function
+}
+
+const Search = ({value, onChange}: Props) => {
 
     //const {id} = useParams<ParamTypes>();
 
@@ -17,9 +22,8 @@ const Search = () => {
         quantity: 0
     });
 
-    const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value} = ev.target;
-        setValues({...values, [name]: value});
+    const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(ev.target.value);
     }
 
     /*const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => { //envio padrão do formulario
@@ -30,7 +34,7 @@ const Search = () => {
         <form className="row mt-4" >
             <div className="col-4">
                 <label htmlFor="inputName fs-3">Name</label>
-                <input type="text" name="name" className="form-control" id="inputName" onChange={(ev) => onChange(ev)}/>
+                <input type="text" name="name" className="form-control" id="inputName" onChange={(ev) => handleChange(ev)}/>
             </div>
             <div className="col-auto mt-4">
                 <button type="submit" className="btn btn-primary mb-3">Search</button>

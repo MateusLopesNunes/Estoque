@@ -10,8 +10,7 @@ const Product = () => {
             <NavBar />
             <div className="container">
                 <h1 className="title mt-4">Inventory management</h1>
-                <Search/>
-                <ButtonAdd />
+                
                 <DataTable />
             </div>
             <Footer/>

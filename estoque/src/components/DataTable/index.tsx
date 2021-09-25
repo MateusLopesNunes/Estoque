@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonAdd from "../../components/ButtonAdd";
-import ModalDelete from "../ButtonDelete";
-import ModalUpdate from "../ButtonUpdate";
 import { BASE_URL } from "../../util/requests";
 import { ProductPage } from "../../types/Product";
 import Search from "../Search";
@@ -11,6 +9,8 @@ import ButtonUpdate from "../ButtonUpdate";
 import ButtonDelete from "../ButtonDelete";
 
 const DataTable = () => {
+
+    const [text, setText] = useState("");
 
     const [activePage, setActivePage] = useState(0);
 
@@ -28,6 +28,14 @@ const DataTable = () => {
         })
     }, [activePage, page.content]);
 
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/product/${text}`).then(Response => {
+            const data = Response.data as ProductPage;
+            setPage(data);
+            console.log(data);
+        });
+    }, [text]);
+
     const changePagination = (index: number) => {
         setActivePage(index);
     }
@@ -38,6 +46,8 @@ const DataTable = () => {
 
     return (
         <>
+            <Search value={text} onChange={(search: string) => setText(search)}/>
+            <ButtonAdd />
             <table className="table table-striped mt-2">
                 <thead>
                     <tr>
@@ -59,7 +69,7 @@ const DataTable = () => {
                             <td>{item.barCode}</td>
                             <td>
                                 <div className="d-grid gap-2 d-md-block">
-                                    <ButtonUpdate product={item}/>
+                                    <ButtonUpdate product={item} />
                                     <ButtonDelete product={item} productChange={changeDelete} />
                                 </div>
                             </td>
