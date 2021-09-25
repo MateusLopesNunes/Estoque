@@ -4,52 +4,47 @@ import axios from "axios";
 import NavBar from "../../components/NavBar";
 import { Product } from "../../types/Product";
 import { BASE_URL } from "../../util/requests";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as yup from "yup";
 
 type ParamTypes = {
     id: string;
 }
 
+type Inputs = {
+    name: string,
+    quantity: number,
+    price: number,
+    barCode: number
+};
+
+const validationForm = yup.object({
+    name: yup.string().max(50, "this field must be a maximum of 6 characters").required("enter a name"),
+    price: yup.number().max(999999, "this field must be a maximum of 6 characters").required("enter a number"),
+    quantity: yup.number().max(99999, "this field must be a maximum of 5 characters").required("enter a number"),
+    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of 12 characters").required("enter a number")
+}); //yup com hook forms
+
 const UpdateProduct = () => {
 
-    const {id} = useParams<ParamTypes>();
-
-    const [values, setValues] = useState<Product>({
-        name: '',
-        barCode: 0,
-        price: 0,
-        quantity: 0
-    });
+    const { id } = useParams<ParamTypes>();
 
     useEffect(() => {
         axios.get(`${BASE_URL}/v2/api/product/id=${id}`).then(response => {
-            const data = response.data as Product;
-            const dataId = data.id;
-            const dataName = data.name;
-            const dataQuantity = data.quantity;
-            const dataPrice = data.price;
-            const dataBarCode = data.barCode;
-            setValues({
-                id: dataId,
-                name: dataName,
-                barCode: dataBarCode,
-                price: dataPrice,
-                quantity: dataQuantity
-            });
+            reset(response.data);
         });
-    }, [])
+    }, []);
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
+        resolver: yupResolver(validationForm)
+    }); //react hook Forms
 
     const history = useHistory(); //hook para fazer o redirecionamento de uma ação
 
-    const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => { //recebe o evento do onChange
-        const { name, value } = ev.target; //desmembrando o objeto. O ev.target contem estes dois atributos.
-
-        setValues({ ...values, [name]: value }); //pega um valor na posição do name, este sendo referente ao name do input
-    }
-
-    const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => { //envio padrão do formulario
-        ev.preventDefault(); //evita o funcionamento padrão do formulario(antigo)
-        axios.put(`${BASE_URL}/v2/api/product/${id}`, values).then(Response => {
-            history.push("/Product");
+    const onSubmit: SubmitHandler<Inputs> = data => { //envio padrão do formulario
+        axios.put(`${BASE_URL}/v2/api/product/${id}`, data).then(Response => {
+            history.push("/Product"); //faz o redirecionamento
         });
     }
 
@@ -59,28 +54,31 @@ const UpdateProduct = () => {
             <div className="container">
                 <h1 className="mt-4">Update product</h1>
                 <div className="mt-4">
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row g-3">
-                            <input type="hidden" />
                             <div className="col-md-8">
                                 <label htmlFor="inputName" className="form-label">Name of product</label>
-                                <input type="text" name="name" className="form-control" id="inputName" value={values.name} onChange={onChange} />
+                                <input type="text" className="form-control" id="inputName" {...register("name")} />
+                                <p className="error">{errors.name?.message}</p>
                             </div>
                             <div className="col-md-4">
                                 <label htmlFor="inputCode" className="form-label">Quantity</label>
-                                <input type="text" name="quantity" className="form-control" id="inputQuantity" value={values.quantity} onChange={onChange} />
+                                <input type="text" className="form-control" id="inputQuantity" {...register("quantity")} />
+                                <p className="error">{errors.quantity?.message}</p>
                             </div>
                             <div className="col-md-6">
                                 <label htmlFor="inputPrice" className="form-label">Price</label>
                                 <div className="input-group">
                                     <span className="input-group-text">$</span>
-                                    <input type="text" name="price" className="form-control" id="inputPrice" aria-label="price of a product" value={values.price} onChange={onChange} />
+                                    <input type="text" className="form-control" id="inputPrice" aria-label="price of a product" {...register("price")} />
                                     <span className="input-group-text">.00</span>
+                                    <p className="error">{errors.price?.message}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <label htmlFor="inputCode" className="form-label">Bar code</label>
-                                <input type="number" name="barCode" className="form-control" id="inputCode" value={values.barCode} onChange={onChange} />
+                                <input type="number" className="form-control" id="inputCode" {...register("barCode")} />
+                                <p className="error">{errors.barCode?.message}</p>
                             </div>
                         </div>
                         <div className="mt-4">

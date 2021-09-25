@@ -22,3 +22,7 @@ html, body {
 .titleLink {
     text-decoration: none;
 }
+
+.error {
+    color: #dc3545;
+}

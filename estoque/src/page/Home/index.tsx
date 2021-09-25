@@ -13,7 +13,7 @@ const Home = () => {
                 <p>This system consists of doing crud operations to manage a store's inventory</p>
             </div>
             <Link className="btn btn-primary" to="/Product">
-                Acessar dashboard
+                Acess products
             </Link>
         </div> 
         </>
