@@ -16,7 +16,7 @@ const validationForm = yup.object({
     name: yup.string().max(50, "this field must be a maximum of 6 characters").required("enter a name"),
     price: yup.number().max(999999, "this field must be a maximum of 6 characters").required("enter a number"),
     quantity: yup.number().max(99999, "this field must be a maximum of 5 characters").required("enter a number"),
-    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of 12 characters").required("enter a number")
+    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of characters").required("enter a number")
 });
 
 const FormProduct = () => {
@@ -57,7 +57,7 @@ const FormProduct = () => {
                 </div>
                 <div className="col-md-6">
                     <label htmlFor="inputCode" className="form-label">Bar code</label>
-                        <input type="number" className="form-control" id="inputCode" {...register("barCode")}/>
+                        <input type="text" className="form-control" id="inputCode" {...register("barCode")}/>
                         <p className="error">{errors.barCode?.message}</p>
                 </div>
             </div>

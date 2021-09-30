@@ -12,6 +12,8 @@ const DataTable = () => {
 
     const [text, setText] = useState("");
 
+    //const [search, setSearch] = useState<Product[]>();
+
     const [activePage, setActivePage] = useState(0);
 
     const [page, setPage] = useState<ProductPage>({
@@ -28,14 +30,6 @@ const DataTable = () => {
         })
     }, [activePage, page.content]);
 
-    useEffect(() => {
-        axios.get(`${BASE_URL}/v2/api/product/${text}`).then(Response => {
-            const data = Response.data as ProductPage;
-            setPage(data);
-            console.log(data);
-        });
-    }, [text]);
-
     const changePagination = (index: number) => {
         setActivePage(index);
     }
@@ -44,9 +38,16 @@ const DataTable = () => {
         axios.delete(`${BASE_URL}/v2/api/product/${id}`)
     }
 
+    const changeSearch = (name: string) => {
+        setText(name);
+        console.log(text);
+        //const filtered = page.content?.filter(x => x.name === text);
+        //setSearch(filtered);
+    }
+
     return (
         <>
-            <Search value={text} onChange={(search: string) => setText(search)}/>
+            <Search onChange={(search: string) => changeSearch(search)} />
             <ButtonAdd />
             <table className="table table-striped mt-2">
                 <thead>
