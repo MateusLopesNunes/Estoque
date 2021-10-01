@@ -30,6 +30,12 @@ const DataTable = () => {
         })
     }, [activePage, page.content]);
 
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/product/${text}`).then(response => {
+            setPage(response.data);
+        })
+    }, [text]);
+
     const changePagination = (index: number) => {
         setActivePage(index);
     }
