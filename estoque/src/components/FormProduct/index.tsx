@@ -4,12 +4,14 @@ import { BASE_URL } from "../../util/requests";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useEffect, useState } from "react";
+import { Category } from "../../types/Product";
 
 type Inputs = {
-  name: string,
-  quantity: number,
-  price: number,
-  barCode: number
+    name: string,
+    quantity: number,
+    price: number,
+    barCode: number
 };
 
 const validationForm = yup.object({
@@ -21,6 +23,14 @@ const validationForm = yup.object({
 
 const FormProduct = () => {
 
+    const [select, setSelect] = useState<Category[]>();
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/category`).then(response => {
+            setSelect(response.data);
+        })
+    }, []);
+
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(validationForm)
     });
@@ -28,7 +38,7 @@ const FormProduct = () => {
 
     const onSubmit: SubmitHandler<Inputs> = data => { //envio padrão do formulario
 
-        axios.post(`${BASE_URL}/v2/api/product`, data).then(response => { 
+        axios.post(`${BASE_URL}/v2/api/product`, data).then(response => {
             history.push('/Product'); //faz o redirecionamento
         });
     }
@@ -46,19 +56,27 @@ const FormProduct = () => {
                     <input type="text" className="form-control" id="inputQuantity" {...register("quantity")} />
                     <p className="error">{errors.quantity?.message}</p>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-4">
                     <label htmlFor="inputPrice" className="form-label">Price</label>
                     <div className="input-group">
                         <span className="input-group-text">$</span>
-                            <input type="text" className="form-control" id="inputPrice" aria-label="price of a product" {...register("price")}/>
+                        <input type="text" className="form-control" id="inputPrice" aria-label="price of a product" {...register("price")} />
                         <span className="input-group-text">.00</span>
                         <p className="error">{errors.price?.message}</p>
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-4">
                     <label htmlFor="inputCode" className="form-label">Bar code</label>
-                        <input type="text" className="form-control" id="inputCode" {...register("barCode")}/>
-                        <p className="error">{errors.barCode?.message}</p>
+                    <input type="text" className="form-control" id="inputCode" {...register("barCode")} />
+                    <p className="error">{errors.barCode?.message}</p>
+                </div>
+                <div className="col-md-4">
+                    <label className="form-label" htmlFor="categories">Categories</label>
+                    <select className="form-select" name="categories" id="categories">
+                        {select?.map(item => (
+                        <option key={item.id}>{item.name}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
             <div className="mt-4">

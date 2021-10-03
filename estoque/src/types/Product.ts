@@ -3,7 +3,8 @@ export type Product = {
 	name: string;
 	barCode: number;
 	price: number;
-	quantity: number;	
+	quantity: number;
+    category?: Category;	
 }
 
 export type ProductPage = {
@@ -16,4 +17,9 @@ export type ProductPage = {
     first: boolean;
     numberOfElements?: number;
     empty?: boolean;
+}
+
+export type Category = {
+    id?: number;
+	name: string;
 }

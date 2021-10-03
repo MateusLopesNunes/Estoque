@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import axios from "axios";
 import NavBar from "../../components/NavBar";
-import { Product } from "../../types/Product";
+import { Category } from "../../types/Product";
 import { BASE_URL } from "../../util/requests";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -28,10 +28,25 @@ const validationForm = yup.object({
 
 const UpdateProduct = () => {
 
+    const [select, setSelect] = useState<Category>();
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/category`).then(response => {
+            setSelect(response.data);
+        })
+    }, []);
+
     const { id } = useParams<ParamTypes>();
 
     useEffect(() => {
         axios.get(`${BASE_URL}/v2/api/product/id=${id}`).then(response => {
+            reset(response.data);
+        });
+    }, []);
+
+    //implementa no back end
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/category/id=${id}`).then(response => {
             reset(response.data);
         });
     }, []);
@@ -66,7 +81,7 @@ const UpdateProduct = () => {
                                 <input type="text" className="form-control" id="inputQuantity" {...register("quantity")} />
                                 <p className="error">{errors.quantity?.message}</p>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-md-4">
                                 <label htmlFor="inputPrice" className="form-label">Price</label>
                                 <div className="input-group">
                                     <span className="input-group-text">$</span>
@@ -75,10 +90,16 @@ const UpdateProduct = () => {
                                     <p className="error">{errors.price?.message}</p>
                                 </div>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-md-4">
                                 <label htmlFor="inputCode" className="form-label">Bar code</label>
                                 <input type="number" className="form-control" id="inputCode" {...register("barCode")} />
                                 <p className="error">{errors.barCode?.message}</p>
+                            </div>
+                            <div className="col-md-4">
+                                <label className="form-label" htmlFor="categories">Categories</label>
+                                <select className="form-select" name="categories" id="categories">
+                                    <option>{select?.name}</option>
+                                </select>
                             </div>
                         </div>
                         <div className="mt-4">

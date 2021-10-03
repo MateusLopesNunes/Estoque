@@ -62,7 +62,8 @@ const DataTable = () => {
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">barCode</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">BarCode</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -73,6 +74,7 @@ const DataTable = () => {
                             <td>{item.name}</td>
                             <td>{item.price.toFixed(2)}</td>
                             <td>{item.quantity}</td>
+                            <td>{item.category?.name}</td>
                             <td>{item.barCode}</td>
                             <td>
                                 <div className="d-grid gap-2 d-md-block">
