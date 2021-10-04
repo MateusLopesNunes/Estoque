@@ -11,7 +11,10 @@ type Inputs = {
     name: string,
     quantity: number,
     price: number,
-    barCode: number
+    barCode: number,
+    category?: {
+        name: string
+    }
 };
 
 const validationForm = yup.object({
@@ -31,9 +34,9 @@ const FormProduct = () => {
         })
     }, []);
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors }} = useForm<Inputs>({
         resolver: yupResolver(validationForm)
-    });
+    }); //react hook Forms
     const history = useHistory(); //hook para fazer o redirecionamento de uma ação
 
     const onSubmit: SubmitHandler<Inputs> = data => { //envio padrão do formulario
@@ -72,9 +75,9 @@ const FormProduct = () => {
                 </div>
                 <div className="col-md-4">
                     <label className="form-label" htmlFor="categories">Categories</label>
-                    <select className="form-select" name="categories" id="categories">
+                    <select className="form-select" id="categories" {...register("category.name")}>
                         {select?.map(item => (
-                        <option key={item.id}>{item.name}</option>
+                            <option key={item.id} >{item.name}</option>
                         ))}
                     </select>
                 </div>

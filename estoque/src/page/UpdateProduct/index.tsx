@@ -16,19 +16,22 @@ type Inputs = {
     name: string,
     quantity: number,
     price: number,
-    barCode: number
+    barCode: number,
+    category?: {
+        name: string
+    }
 };
 
 const validationForm = yup.object({
     name: yup.string().max(50, "this field must be a maximum of 6 characters").required("enter a name"),
     price: yup.number().max(999999, "this field must be a maximum of 6 characters").required("enter a number"),
     quantity: yup.number().max(99999, "this field must be a maximum of 5 characters").required("enter a number"),
-    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of 12 characters").required("enter a number")
+    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of 12 characters").required("enter a number"),
 }); //yup com hook forms
 
 const UpdateProduct = () => {
 
-    const [select, setSelect] = useState<Category>();
+    const [select, setSelect] = useState<Category[]>();
 
     useEffect(() => {
         axios.get(`${BASE_URL}/v2/api/category`).then(response => {
@@ -40,13 +43,6 @@ const UpdateProduct = () => {
 
     useEffect(() => {
         axios.get(`${BASE_URL}/v2/api/product/id=${id}`).then(response => {
-            reset(response.data);
-        });
-    }, []);
-
-    //implementa no back end
-    useEffect(() => {
-        axios.get(`${BASE_URL}/v2/api/category/id=${id}`).then(response => {
             reset(response.data);
         });
     }, []);
@@ -97,8 +93,10 @@ const UpdateProduct = () => {
                             </div>
                             <div className="col-md-4">
                                 <label className="form-label" htmlFor="categories">Categories</label>
-                                <select className="form-select" name="categories" id="categories">
-                                    <option>{select?.name}</option>
+                                <select className="form-select" id="categories" {...register("category.name")}>
+                                    {select?.map(item => (
+                                        <option key={item.id}>{item.name}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
