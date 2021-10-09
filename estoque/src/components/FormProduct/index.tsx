@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { Category } from "../../types/Product";
+import { log } from "console";
 
 type Inputs = {
     name: string,
@@ -13,7 +14,7 @@ type Inputs = {
     price: number,
     barCode: number,
     category?: {
-        name: string
+        id: number
     }
 };
 
@@ -34,7 +35,7 @@ const FormProduct = () => {
         })
     }, []);
 
-    const { register, handleSubmit, formState: { errors }} = useForm<Inputs>({
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(validationForm)
     }); //react hook Forms
     const history = useHistory(); //hook para fazer o redirecionamento de uma ação
@@ -75,9 +76,10 @@ const FormProduct = () => {
                 </div>
                 <div className="col-md-4">
                     <label className="form-label" htmlFor="categories">Categories</label>
-                    <select className="form-select" id="categories" {...register("category.name")}>
+                    <select className="form-select" id="categories" {...register("category.id")}>
+                        <option>Enter to category</option>
                         {select?.map(item => (
-                            <option key={item.id} >{item.name}</option>
+                            <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
                     </select>
                 </div>

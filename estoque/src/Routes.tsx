@@ -14,7 +14,7 @@ const Routes = () => {
                 <Route path="/Product/" component={Product}>
                     <Product />
                 </Route>
-                <Route path="/Registration" component={RegistrationProduct}>
+                <Route path="/Registration/" component={RegistrationProduct}>
                     <RegistrationProduct />
                 </Route>
                 <Route path="/Update/:id" component={UpdateProduct}>

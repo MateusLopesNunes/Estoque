@@ -7,6 +7,7 @@ import { BASE_URL } from "../../util/requests";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
+import Footer from "../../components/Footer";
 
 type ParamTypes = {
     id: string;
@@ -18,7 +19,7 @@ type Inputs = {
     price: number,
     barCode: number,
     category?: {
-        name: string
+        id: number
     }
 };
 
@@ -62,50 +63,53 @@ const UpdateProduct = () => {
     return (
         <>
             <NavBar />
-            <div className="container">
-                <h1 className="mt-4">Update product</h1>
-                <div className="mt-4">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="row g-3">
-                            <div className="col-md-8">
-                                <label htmlFor="inputName" className="form-label">Name of product</label>
-                                <input type="text" className="form-control" id="inputName" {...register("name")} />
-                                <p className="error">{errors.name?.message}</p>
-                            </div>
-                            <div className="col-md-4">
-                                <label htmlFor="inputCode" className="form-label">Quantity</label>
-                                <input type="text" className="form-control" id="inputQuantity" {...register("quantity")} />
-                                <p className="error">{errors.quantity?.message}</p>
-                            </div>
-                            <div className="col-md-4">
-                                <label htmlFor="inputPrice" className="form-label">Price</label>
-                                <div className="input-group">
-                                    <span className="input-group-text">$</span>
-                                    <input type="text" className="form-control" id="inputPrice" aria-label="price of a product" {...register("price")} />
-                                    <span className="input-group-text">.00</span>
-                                    <p className="error">{errors.price?.message}</p>
+            <main>
+                <div className="container">
+                    <h1 className="mt-4">Update product</h1>
+                    <div className="mt-4">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="row g-3">
+                                <div className="col-md-8">
+                                    <label htmlFor="inputName" className="form-label">Name of product</label>
+                                    <input type="text" className="form-control" id="inputName" {...register("name")} />
+                                    <p className="error">{errors.name?.message}</p>
+                                </div>
+                                <div className="col-md-4">
+                                    <label htmlFor="inputCode" className="form-label">Quantity</label>
+                                    <input type="text" className="form-control" id="inputQuantity" {...register("quantity")} />
+                                    <p className="error">{errors.quantity?.message}</p>
+                                </div>
+                                <div className="col-md-4">
+                                    <label htmlFor="inputPrice" className="form-label">Price</label>
+                                    <div className="input-group">
+                                        <span className="input-group-text">$</span>
+                                        <input type="text" className="form-control" id="inputPrice" aria-label="price of a product" {...register("price")} />
+                                        <span className="input-group-text">.00</span>
+                                        <p className="error">{errors.price?.message}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-4">
+                                    <label htmlFor="inputCode" className="form-label">Bar code</label>
+                                    <input type="number" className="form-control" id="inputCode" {...register("barCode")} />
+                                    <p className="error">{errors.barCode?.message}</p>
+                                </div>
+                                <div className="col-md-4">
+                                    <label className="form-label" htmlFor="categories">Categories</label>
+                                    <select className="form-select" id="categories" {...register("category.id")}>
+                                        {select?.map(item => (
+                                            <option key={item.id} value={item.id}>{item.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
-                            <div className="col-md-4">
-                                <label htmlFor="inputCode" className="form-label">Bar code</label>
-                                <input type="number" className="form-control" id="inputCode" {...register("barCode")} />
-                                <p className="error">{errors.barCode?.message}</p>
+                            <div className="mt-4">
+                                <button type="submit" className="btn btn-primary buttonSave">Update</button>
                             </div>
-                            <div className="col-md-4">
-                                <label className="form-label" htmlFor="categories">Categories</label>
-                                <select className="form-select" id="categories" {...register("category.name")}>
-                                    {select?.map(item => (
-                                        <option key={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <button type="submit" className="btn btn-primary buttonSave">Update</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+            <Footer />
         </>
     );
 }

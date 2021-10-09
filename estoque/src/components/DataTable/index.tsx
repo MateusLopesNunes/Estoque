@@ -3,16 +3,11 @@ import axios from "axios";
 import ButtonAdd from "../../components/ButtonAdd";
 import { BASE_URL } from "../../util/requests";
 import { ProductPage } from "../../types/Product";
-import Search from "../Search";
 import Pagiation from "../Pagination";
 import ButtonUpdate from "../ButtonUpdate";
 import ButtonDelete from "../ButtonDelete";
 
 const DataTable = () => {
-
-    const [text, setText] = useState("");
-
-    //const [search, setSearch] = useState<Product[]>();
 
     const [activePage, setActivePage] = useState(0);
 
@@ -30,12 +25,6 @@ const DataTable = () => {
         })
     }, [activePage, page.content]);
 
-    useEffect(() => {
-        axios.get(`${BASE_URL}/v2/api/product/${text}`).then(response => {
-            setPage(response.data);
-        })
-    }, [text]);
-
     const changePagination = (index: number) => {
         setActivePage(index);
     }
@@ -44,18 +33,9 @@ const DataTable = () => {
         axios.delete(`${BASE_URL}/v2/api/product/${id}`)
     }
 
-    const changeSearch = (name: string) => {
-        setText(name);
-        console.log(text);
-        //const filtered = page.content?.filter(x => x.name === text);
-        //setSearch(filtered);
-    }
-
     return (
         <>
-            <Search onChange={(search: string) => changeSearch(search)} />
-            <ButtonAdd />
-            <table className="table table-striped mt-2">
+            <table className="table table-striped  mt-2">
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
