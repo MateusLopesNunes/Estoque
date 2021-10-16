@@ -32,3 +32,7 @@ html, body {
 .error {
     color: #dc3545;
 }
+
+.w-40 {
+    width: 32%;
+}

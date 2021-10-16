@@ -1,11 +1,15 @@
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { BASE_URL } from "../../util/requests";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import { useEffect, useState } from "react";
 import { Category } from "../../types/Product";
+import { BASE_URL } from "../../util/requests";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as yup from "yup";
+
+type ParamTypes = {
+    id: string;
+}
 
 type Inputs = {
     name: string,
@@ -18,13 +22,13 @@ type Inputs = {
 };
 
 const validationForm = yup.object({
-    name: yup.string().max(50, "this field must be a maximum of 50 characters").required("enter a name"),
+    name: yup.string().max(50, "this field must be a maximum of 6 characters").required("enter a name"),
     price: yup.number().max(999999, "this field must be a maximum of 6 characters").required("enter a number"),
     quantity: yup.number().max(99999, "this field must be a maximum of 5 characters").required("enter a number"),
-    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").required("enter a number"),
-});
+    barCode: yup.number().max(999999999999, "this field must be a maximum of 12 characters").min(9999999999, "this field must be a minimum of 12 characters").required("enter a number"),
+}); //yup com hook forms
 
-const FormProduct = () => {
+const FormUpdate = () => {
 
     const [select, setSelect] = useState<Category[]>();
 
@@ -34,15 +38,23 @@ const FormProduct = () => {
         })
     }, []);
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { id } = useParams<ParamTypes>();
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/v2/api/product/id=${id}`).then(response => {
+            reset(response.data);
+        });
+    }, []);
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
         resolver: yupResolver(validationForm)
     }); //react hook Forms
+
     const history = useHistory(); //hook para fazer o redirecionamento de uma ação
 
     const onSubmit: SubmitHandler<Inputs> = data => { //envio padrão do formulario
-
-        axios.post(`${BASE_URL}/v2/api/product`, data).then(response => {
-            history.push('/Product'); //faz o redirecionamento
+        axios.put(`${BASE_URL}/v2/api/product/${id}`, data).then(Response => {
+            history.push("/Product"); //faz o redirecionamento
         });
     }
 
@@ -70,13 +82,12 @@ const FormProduct = () => {
                 </div>
                 <div className="col-md-4">
                     <label htmlFor="inputCode" className="form-label">Bar code</label>
-                    <input type="text" className="form-control" id="inputCode" {...register("barCode")} />
+                    <input type="number" className="form-control" id="inputCode" {...register("barCode")} />
                     <p className="error">{errors.barCode?.message}</p>
                 </div>
                 <div className="col-md-4">
                     <label className="form-label" htmlFor="categories">Categories</label>
                     <select className="form-select" id="categories" {...register("category.id")}>
-                        <option>Enter to category</option>
                         {select?.map(item => (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
@@ -84,10 +95,10 @@ const FormProduct = () => {
                 </div>
             </div>
             <div className="mt-4">
-                <button type="submit" className="btn btn-primary buttonSave">Save</button>
+                <button type="submit" className="btn btn-primary buttonSave">Update</button>
             </div>
         </form>
     );
 }
 
-export default FormProduct;
+export default FormUpdate;
